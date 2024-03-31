@@ -1,0 +1,22 @@
+version: '3.9'
+
+networks:
+  my_docker_network:
+
+services:
+  mysql:
+    # use e.g. MySQL Shell (https://dev.mysql.com/doc/mysql-shell/8.0/en/):
+    #   mysqlsh -u root -h 127.0.0.1
+    #   \sql
+    #   use <databasename>
+    #   select * from <table>
+    #   etc.
+    image: mysql:8.0.28
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3306:3306"
+    networks:
+      - my_docker_network
+
