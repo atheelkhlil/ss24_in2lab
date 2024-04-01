@@ -16,24 +16,25 @@ Sven Berding, sven.berding(at)haw-hamburg.de
    - Unter Windows: Nutze die Windows-Kommandozeile (cmd) und nicht die Powershell (PS)! Falls du dich in einer Powershell befindest (sichtbar durch das `PS` am Zeilenanfang), rufe `cmd` auf, um eine Windows-Kommandozeile zu öffnen. Bei Änderungen der Systemeinstellungen (JAVA_HOME, PATH, ...) muss das Terminal neu geöffnet werden, damit die Änderungen effektiv werden.
    - Falls du noch nicht sicher im Umgang mit einem Terminal bist (Verzeichnisse wechseln, etc.), schaue dir ein Tutorial wie z.B. [dieses für Windows](https://www.makeuseof.com/tag/a-beginners-guide-to-the-windows-command-line/) oder [dieses für Linux](https://ubuntu.com/tutorials/command-line-for-beginners#1-overview) oder [diese für macOS](https://www.makeuseof.com/tag/mac-terminal-commands-cheat-sheet/) an.
 
-3. Klone Dein Projekt: 
+3. Klone das Projekt: 
     ```bash
     git clone https://github.com/srs-haw/ss24_in2lab
     ```
 
-4. Prüfe mittels `javac -version` (vergiss das "c" nicht!), ob Du das korrekte JDK verwendest! Falls nicht, achte auf die korrekte Einrichtung des JDK (Punkt 1) und ob du in der richtigen Shell (unter Windows: cmd anstelle von PS)  bist.
+4. Prüfe mittels `javac -version` (vergiss das "c" nicht!), ob Du das korrekte JDK verwendest! Falls nicht, achte auf die korrekte Einrichtung des JDK (Punkt 1) und ob du in der richtigen Shell (unter Windows: `cmd` anstelle von `PS`)  bist.
 
 5. Führe die Tests im Terminal aus mittels 
      ```bash
-     ./gradlew clean build (unter Linux/macOS, bei Bedarf dort zuvor "chmod +x ./gradlew" ausführen, um die Ausführungsberechtigung zu setzen)
+     ./gradlew clean build (unter Linux/macOS, bei Bedarf dort zuvor "chmod +x ./gradlew" ausführen, 
+                            um die Ausführungsberechtigung zu setzen)
      ```
      bzw. 
      ```bash
-     gradlew.bat clean build (unter Windows)
+     gradlew.bat clean build (unter Windows cmd/command)
      ```
      Gradlew/Gradle ist ein Tool zur Automatisierung (ähnlich `maven`, `make`, `npm`, `msbuild`, ...) und übersetzt das Projekt, führt die Tests aus und erzeugt eine Jar-Datei aus den Quellen. Informationen zu gradle findest Du [hier](https://gradle.org). Wesentlich ist die Datei `build.gradle`, in der die Projektabhängigkeiten zu externen Bibliotheken und Tasks definiert werden. Durch das Java-Plugin stehen Tasks zur Übersetzung, Starten der Applikation, etc. zur Verfügung. Du kannst alles verfügbaren Tasks mittels `./gradlew (gradlew.bat) tasks` auflisten.
    
-     Es sollte `Build Successful` erscheinen (falls nein, prüfe noch einmal Punkt 6). Die erste Ausführung des Gradle-Wrappers `gradlew` dauert etwas länger, da zunächst die Gradle-Distribution und dann die abhängigen Java-Bibliotheken geladen werden (später kommen sie aus dem lokalen Cache).  
+     Es sollte `Build Successful` erscheinen (falls nein, prüfe noch einmal die vorherigen Punkte). Die erste Ausführung des Gradle-Wrappers `gradlew` dauert etwas länger, da zunächst die Gradle-Distribution und dann die abhängigen Java-Bibliotheken geladen werden (später kommen sie aus dem lokalen Cache).  
    <br />
       Falls ein Fehler wie `Execution failed for task ':bootJarMainClassName'... Could not resolve ...` auftritt, blockiert wahrscheinlich deine Firewall das Herunterladen der Depedencies. Problem und Lösung siehe [hier](https://stackoverflow.com/questions/25243342/gradle-build-is-failing-could-not-resolve-all-dependencies-for-configuration):
 
@@ -48,8 +49,8 @@ Sven Berding, sven.berding(at)haw-hamburg.de
 
 3. Aktiviere in IntelliJ bei den Preferences unter `Editor->Code Style` auf dem Tab `Formatter` die Option `Turn formatter on/off with markers in code comments`. Falls diese Option nicht gesetzt ist, führt dies in den REST-assured-Testfällen zu unschönen Code-Reformatierungen, die das Lesen dieser Testfälle erschweren.
 
-4. Öffne nun Dein geforktes Projekt in IntelliJ.
-   - Öffne unbedingt den se1lab-Ordner, in dem die build.gradle, src-Ordner etc. liegen - nicht einen übergeordneten Ordner! Sonst erkennt IntelliJ das Projekt nicht. 
+4. Importiere nun Dein Projekt in IntelliJ (`File->New->Pproject from Existing Sources`).
+   - Öffne unbedingt den Hauptordner, in dem die build.gradle, src-Ordner etc. liegen - nicht einen übergeordneten Ordner! Sonst erkennt IntelliJ das Projekt nicht. 
    - Es dauert etwas beim ersten Laden.
 
 5. Aktiviere bei den Preferences unter `Build,Execution,Deployment->Compiler->Annotation Processors` das Annotation Processing (`Enable annotation processing`). Hierdurch erkennt IntelliJ die erzeugten Lombok-Artefakte korrekt und erzeugt keine Warnungen/Fehler mehr im Editor aufgrund (fälschlich) "fehlender" Getter/Setter. Evtl. ist das in deiner IntelliJ Ultimate bereits voreingestellt.
