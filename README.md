@@ -49,7 +49,7 @@ Sven Berding, sven.berding(at)haw-hamburg.de
 
 3. Aktiviere in IntelliJ bei den Preferences unter `Editor->Code Style` auf dem Tab `Formatter` die Option `Turn formatter on/off with markers in code comments`. Falls diese Option nicht gesetzt ist, führt dies in den REST-assured-Testfällen zu unschönen Code-Reformatierungen, die das Lesen dieser Testfälle erschweren.
 
-4. Importiere nun Dein Projekt in IntelliJ (`File->New->Pproject from Existing Sources`).
+4. Importiere nun Dein Projekt in IntelliJ (`File->New->Project from Existing Sources`).
    - Öffne unbedingt den Hauptordner, in dem die build.gradle, src-Ordner etc. liegen - nicht einen übergeordneten Ordner! Sonst erkennt IntelliJ das Projekt nicht. 
    - Es dauert etwas beim ersten Laden.
 
