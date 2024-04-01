@@ -7,26 +7,34 @@ Sven Berding, sven.berding(at)haw-hamburg.de
 
 ## A. Einrichtung des JDK und Ausführen der Tests
 
-1. Installiere lokal auf Deinem Rechner:
-    - Java OpenJDK (**nicht das Java Runtime Environment (JRE)**! Mindestens das **JDK 17**, erfolgreich getestet auch mit JDK 21: https://openjdk.org. 
-    - Unter Windows: 
-      - JAVA_HOME setzen und den Compiler in den PATH aufnehmen ([Anleitung hier](https://tecadmin.net/set-java-home-on-windows/)); verwende dort statt des in den Screenshots gezeigten `jdk1.8.0_121` entsprechend deine installierte Version!
+1. Installiere Java (JDK 21) auf Deinem Rechner:
+    - entweder (**ohne Gewähr, aber einfacher als unten, wenn es klappt :-)**:
+      - macOS/Linux: führe im Terminal `curl -Ls https://sh.jbang.dev | bash -s - jdk install 21` aus
+      - Windows: führe im Terminal (Powershell/PS, nicht cmd/command) `iex "& { $(iwr https://ps.jbang.dev) } jdk install 21"` aus (inklusive der Anführungszeichen!)
+    - oder:
+      - Installiere das [OpenJDK 21](https://jdk.java.net/21/) - nicht das Java Runtime Environment (JRE) 
+      - Verwende, wenn möglich, dazu einen Paketmanager (unter macOS/Linux bspw. [Homebrew](https://brew.sh) oder [SDKMAN!](https://sdkman.io), unter Windows bspw. [Chocolatey](https://community.chocolatey.org) oder [Scoop](https://scoop.sh))
+      - Unter Windows müssen Umgebungsvariablen gesetzt werden, prüfe dies nach Deiner Installation, ansonsten können die Befehle (`java`, `javac`) nicht im Terminal verwendet werden: 
+        - JAVA_HOME setzen und den Compiler in den PATH aufnehmen ([Anleitung hier](https://tecadmin.net/set-java-home-on-windows/)); verwende dort statt des in den Screenshots gezeigten `jdk1.8.0_121` entsprechend deine installierte Version!
+        - Im Normalfall sollte diese Aufgabe der Paketmanager (s.o.) erledigt haben!
 
 2. Öffne ein Terminal-Fenster.
    - Unter Windows: Nutze die Windows-Kommandozeile (cmd) und nicht die Powershell (PS)! Falls du dich in einer Powershell befindest (sichtbar durch das `PS` am Zeilenanfang), rufe `cmd` auf, um eine Windows-Kommandozeile zu öffnen. Bei Änderungen der Systemeinstellungen (JAVA_HOME, PATH, ...) muss das Terminal neu geöffnet werden, damit die Änderungen effektiv werden.
-   - Falls du noch nicht sicher im Umgang mit einem Terminal bist (Verzeichnisse wechseln, etc.), schaue dir ein Tutorial wie z.B. [dieses für Windows](https://www.makeuseof.com/tag/a-beginners-guide-to-the-windows-command-line/) oder [dieses für Linux](https://ubuntu.com/tutorials/command-line-for-beginners#1-overview) oder [diese für macOS](https://www.makeuseof.com/tag/mac-terminal-commands-cheat-sheet/) an.
+   - Falls du noch nicht sicher im Umgang mit einem Terminal bist (Verzeichnisse wechseln, anlegen, ansehen, etc.), schaue dir ein Tutorial wie z.B. [dieses für Windows](https://www.makeuseof.com/tag/a-beginners-guide-to-the-windows-command-line/) oder [dieses für Linux](https://ubuntu.com/tutorials/command-line-for-beginners#1-overview) oder [diese für macOS](https://www.makeuseof.com/tag/mac-terminal-commands-cheat-sheet/) an.
 
-3. Klone das Projekt: 
+3. Klone unser Projekt: 
     ```bash
     git clone https://github.com/srs-haw/ss24_in2lab
     ```
 
 4. Prüfe mittels `javac -version` (vergiss das "c" nicht!), ob Du das korrekte JDK verwendest! Falls nicht, achte auf die korrekte Einrichtung des JDK (Punkt 1) und ob du in der richtigen Shell (unter Windows: `cmd` anstelle von `PS`)  bist.
 
-5. Führe die Tests im Terminal aus mittels 
+5. Wechsle in das Projektverzeichnis (dort liegt u.a. die Datei `build.gradle`)
+
+6. Übersetze das Projekt und führe die Tests im Terminal aus mittels 
      ```bash
-     ./gradlew clean build (unter Linux/macOS, bei Bedarf dort zuvor "chmod +x ./gradlew" ausführen, 
-                            um die Ausführungsberechtigung zu setzen)
+     ./gradlew clean build (unter Linux/macOS, bei Bedarf dort zuvor "chmod +x ./gradlew" ausf&uuml;hren, 
+                            um die Ausf&uuml;hrungsberechtigung zu setzen)
      ```
      bzw. 
      ```bash
@@ -38,7 +46,7 @@ Sven Berding, sven.berding(at)haw-hamburg.de
    <br />
       Falls ein Fehler wie `Execution failed for task ':bootJarMainClassName'... Could not resolve ...` auftritt, blockiert wahrscheinlich deine Firewall das Herunterladen der Depedencies. Problem und Lösung siehe [hier](https://stackoverflow.com/questions/25243342/gradle-build-is-failing-could-not-resolve-all-dependencies-for-configuration):
 
-## B. Einrichtung einer IDE
+## B. Einrichtung einer Entwicklungsumgebung (IDE - Integrated Development Environment)
 
 1. Installiere lokal auf Deinem Rechner (achte auf die aktuellen Versionen!):
     - (empfohlen) Jetbrains IntelliJ IDEA **Ultimate**(!), aktuelle Version: https://www.jetbrains.com/idea/ (du kannst dies mit Deiner `haw-hamburg.de`-Adresse kostenlos nutzen)
