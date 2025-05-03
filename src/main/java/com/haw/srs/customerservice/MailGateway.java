@@ -21,6 +21,7 @@ public class MailGateway {
             emailSender.send(message);
         } catch (MailException ex) {
             // do some logging and handling here
+            System.out.println("Mail could not be sent."+ex.getMessage());
             return false;
         }
         return true;

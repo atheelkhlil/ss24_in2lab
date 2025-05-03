@@ -1,5 +1,13 @@
-package com.haw.srs.customerservice;
+package com.haw.srs.customerservice.Service;
 
+import com.haw.srs.customerservice.Course;
+import com.haw.srs.customerservice.Customer;
+import com.haw.srs.customerservice.Exception.CourseNotFoundException;
+import com.haw.srs.customerservice.Exception.CustomerNotFoundException;
+import com.haw.srs.customerservice.Exception.MembershipMailNotSent;
+import com.haw.srs.customerservice.MailGateway;
+import com.haw.srs.customerservice.Repo.CourseRepository;
+import com.haw.srs.customerservice.Repo.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +17,8 @@ public class CourseService {
 
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private CourseRepository courseRepository;
 
     @Autowired
     private MailGateway mailGateway;
@@ -18,7 +28,8 @@ public class CourseService {
         Customer customer = customerRepository
                 .findByLastName(lastName)
                 .orElseThrow(() -> new CustomerNotFoundException(lastName));
-
+        course.setAnzahlTeilnehmer(course.getAnzahlTeilnehmer() + 1);
+        courseRepository.save(course);
         customer.addCourse(course);
         customerRepository.save(customer);
     }
@@ -34,7 +45,7 @@ public class CourseService {
 
         to.getCourses().addAll(from.getCourses());
         from.getCourses().clear();
-
+        //wenn übereinstimmung der kurse anzahlteilnehmer updaten
         customerRepository.save(from);
         customerRepository.save(to);
     }
@@ -46,11 +57,20 @@ public class CourseService {
      * @throws IllegalArgumentException if customerNumber==null or courseNumber==null
      */
     @Transactional
-    public void cancelMembership(CustomerNumber customerNumber, CourseNumber courseNumber) throws CustomerNotFoundException, CourseNotFoundException, MembershipMailNotSent {
+    public void cancelMembership(Long customerNumber, Long courseNumber) throws CustomerNotFoundException, CourseNotFoundException, MembershipMailNotSent {
 
         // some implementation goes here
         // find customer, find course, look for membership, remove membership, etc.
-        String customerMail = "customer@domain.com";
+        if(customerNumber==null || courseNumber==null){
+            throw new IllegalArgumentException();
+        }
+        Customer customer= customerRepository.findById(customerNumber).orElseThrow(()->new CustomerNotFoundException(customerNumber));
+        Course course = courseRepository.findById(courseNumber).orElseThrow(()->new CourseNotFoundException(courseNumber));
+        if(!customer.getCourses().contains(course)){
+           return;
+        }
+
+        String customerMail = customer.getEmail();
 
         boolean mailWasSent = mailGateway.sendMail(customerMail, "Oh, we're sorry that you canceled your membership!", "Some text to make her/him come back again...");
         if (!mailWasSent) {
@@ -59,5 +79,15 @@ public class CourseService {
             
             throw new MembershipMailNotSent(customerMail);
         }
+        course.setAnzahlTeilnehmer(course.getAnzahlTeilnehmer()-1);
+        customer.removeCourse(course);
+        customerRepository.save(customer);
+        courseRepository.save(course);
     }
+
+//    public Course findCourseByName(String lastName) throws CourseNotFoundException {
+//        return courseRepository
+//                .findCourseByName(lastName)
+//                .orElseThrow(() -> new CourseNotFoundException());
+//    }
 }

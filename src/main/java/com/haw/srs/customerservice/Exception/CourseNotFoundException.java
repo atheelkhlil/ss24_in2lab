@@ -1,15 +1,15 @@
-package com.haw.srs.customerservice;
+package com.haw.srs.customerservice.Exception;
 
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 @Value
 @EqualsAndHashCode(callSuper=false)
-class CourseNotFoundException extends Exception {
+public class CourseNotFoundException extends Exception {
 
-    private final int courseNumber;
+    private final long courseNumber;
 
-    CourseNotFoundException(int courseNumber) {
+    public CourseNotFoundException(long courseNumber) {
         super(String.format("Could not find course with number %d.", courseNumber));
 
         this.courseNumber = courseNumber;

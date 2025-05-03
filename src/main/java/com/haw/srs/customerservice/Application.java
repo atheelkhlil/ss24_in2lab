@@ -1,5 +1,7 @@
 package com.haw.srs.customerservice;
 
+import com.haw.srs.customerservice.Repo.CourseRepository;
+import com.haw.srs.customerservice.Repo.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -20,10 +22,13 @@ public class Application {
 class PopulateTestDataRunner implements CommandLineRunner {
 
     private final CustomerRepository customerRepository;
+    private final CourseRepository courseRepository;
+
 
     @Autowired
-    public PopulateTestDataRunner(CustomerRepository customerRepository) {
+    public PopulateTestDataRunner(CustomerRepository customerRepository, CourseRepository courseRepository) {
         this.customerRepository = customerRepository;
+        this.courseRepository = courseRepository;
     }
 
     @Override
@@ -37,6 +42,10 @@ class PopulateTestDataRunner implements CommandLineRunner {
         Customer customer = new Customer("Stefan", "Sarstedt", Gender.MALE, "stefan.sarstedt@haw-hamburg.de", new PhoneNumber("+49-40-428758434"));
         Course course = new Course("Software Engineering 1");
         customer.addCourse(course);
+        //courseRepository.save(course);
+
+
         customerRepository.save(customer);
     }
 }
+

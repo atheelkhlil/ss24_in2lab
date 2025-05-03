@@ -1,5 +1,8 @@
-package com.haw.srs.customerservice;
+package com.haw.srs.customerservice.Facade;
 
+import com.haw.srs.customerservice.Customer;
+import com.haw.srs.customerservice.Exception.CustomerNotFoundException;
+import com.haw.srs.customerservice.Repo.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +32,7 @@ public class CustomerFacade {
                 .orElseThrow(() -> new CustomerNotFoundException(customerId));
     }
 
+
     @DeleteMapping("/{id:[\\d]+}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteCustomer(@PathVariable("id") Long customerId) throws CustomerNotFoundException {
@@ -51,7 +55,13 @@ public class CustomerFacade {
         Customer customerToUpdate = customerRepository
                 .findById(customer.getId())
                 .orElseThrow(() -> new CustomerNotFoundException(customer.getId()));
-
-        return customerRepository.save(customer);
+        customerToUpdate.setFirstName(customer.getFirstName());
+        customerToUpdate.setLastName(customer.getLastName());
+        customerToUpdate.setEmail(customer.getEmail());
+        customerToUpdate.setPhoneNumber(customer.getPhoneNumber());
+        customerToUpdate.setGender(customer.getGender());
+        customerToUpdate.getCourses().clear();
+        customerToUpdate.getCourses().addAll(customer.getCourses());
+        return customerRepository.save(customerToUpdate);
     }
 }

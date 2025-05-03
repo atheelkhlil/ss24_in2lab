@@ -1,5 +1,10 @@
-package com.haw.srs.customerservice;
+package com.haw.srs.customerservice.Service;
 
+import com.haw.srs.customerservice.Customer;
+import com.haw.srs.customerservice.Exception.CustomerAlreadyExistingException;
+import com.haw.srs.customerservice.Exception.CustomerNotFoundException;
+import com.haw.srs.customerservice.Gender;
+import com.haw.srs.customerservice.Repo.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

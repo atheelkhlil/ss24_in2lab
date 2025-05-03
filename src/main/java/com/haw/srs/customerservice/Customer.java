@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import jakarta.persistence.FetchType;
 
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @Entity
 @Data
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor//(access = AccessLevel.PRIVATE)
 public class Customer {
 
     @Id
@@ -29,7 +30,12 @@ public class Customer {
 
     private PhoneNumber phoneNumber;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "customer_courses",
+            joinColumns = @JoinColumn(name = "customer_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
     @Setter(AccessLevel.NONE)
     private List<Course> courses = new ArrayList<>();
 
@@ -51,5 +57,14 @@ public class Customer {
 
     public void addCourse(Course course) {
         this.courses.add(course);
+        course.getCustomers().add(this);
+
+       // course.setAnzahlTeilnehmer(course.getAnzahlTeilnehmer()+1);
+    }
+
+    public void removeCourse(Course course) {
+        this.courses.remove(course);
+        course.getCustomers().remove(this);
+       // course.setAnzahlTeilnehmer(course.getAnzahlTeilnehmer()-1);
     }
 }

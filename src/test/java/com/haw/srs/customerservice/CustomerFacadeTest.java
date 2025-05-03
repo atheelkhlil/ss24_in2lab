@@ -1,5 +1,6 @@
 package com.haw.srs.customerservice;
 
+import com.haw.srs.customerservice.Repo.CustomerRepository;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.apache.commons.logging.Log;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.*;
 
 @ExtendWith(SpringExtension.class)
@@ -43,7 +45,7 @@ class CustomerFacadeTest {
     @Test
     void getAllCustomersSuccess() {
         //@formatter:off
-        given().
+        given().log().all().
                 // add this here to log request --> log().all().
         when().
                 get("/customers").
@@ -57,7 +59,7 @@ class CustomerFacadeTest {
     @Test
     void getCustomerSuccess() {
         //@formatter:off
-        given().
+        given().log().all().
         when().
                 get("/customers/{id}", customer.getId()).
         then().
@@ -69,7 +71,7 @@ class CustomerFacadeTest {
     @Test
     void getCustomerFailBecauseOfNotFound() {
         //@formatter:off
-        given().
+        given().log().all().
         when().
                 get("/customers/{id}", Integer.MAX_VALUE).
         then().
@@ -112,6 +114,34 @@ class CustomerFacadeTest {
                 body("firstName", is(equalTo("Stefanie")));
         //@formatter:on
     }
+    @Test
+    void updateCustomerFailBecauseCustNotFound() {
+
+            // Angenommen, Kunde mit dieser ID existiert nicht
+            long nonExistingId = 9999L;
+            customer.setId(nonExistingId);
+            customer.setFirstName("Stefanie");
+
+            //@formatter:off
+            // 1. PUT auf /customers/{id} für nicht vorhandenen Datensatz → 404
+            given().
+                    contentType(ContentType.JSON).
+                    body(customer).
+                    when().
+                    put("/customers/{id}", nonExistingId).
+                    then().
+                    statusCode(HttpStatus.NOT_FOUND.value());
+
+            // 2. GET auf /customers/{id} → ebenfalls 404
+            given().
+                    when().
+                    get("/customers/{id}", nonExistingId).
+                    then().
+                    statusCode(HttpStatus.NOT_FOUND.value());
+            //@formatter:on
+        }
+
+
 
     @Test
     void deleteCustomerSuccess() {
