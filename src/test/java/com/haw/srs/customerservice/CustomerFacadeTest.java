@@ -158,4 +158,37 @@ class CustomerFacadeTest {
                 statusCode(HttpStatus.NOT_FOUND.value());
         //@formatter:on
     }
+
+    @Test
+    void createCustomerFailsWithMalformedJson() {
+        String badJson = "{ \"firstName\": \"Max\", "; // unvollständig
+        given()
+                .contentType(ContentType.JSON)
+                .body(badJson)
+                .when()
+                .post("/customers")
+                .then()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+    @Test
+    void deleteCustomerFailsWhenNotFound() {
+        given()
+                .when()
+                .delete("/customers/{id}", 9999L)
+                .then()
+                .statusCode(HttpStatus.NOT_FOUND.value());
+    }
+    @Test
+    void getAllCustomersReturnsEmptyList() {
+        customerRepository.deleteAll();
+        given()
+                .when()
+                .get("/customers")
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("", hasSize(0));
+    }
+
+
+
 }

@@ -21,7 +21,7 @@ public class Course {
 
     private String name;
     @JsonIgnore
-    @ManyToMany( mappedBy = "courses",cascade = CascadeType.ALL,
+    @ManyToMany( mappedBy = "courses",cascade = CascadeType.PERSIST,
     fetch = FetchType.EAGER)
     private List<Customer> customers = new ArrayList<>();
 

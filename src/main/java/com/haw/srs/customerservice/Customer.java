@@ -30,7 +30,7 @@ public class Customer {
 
     private PhoneNumber phoneNumber;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.PERSIST,fetch = FetchType.EAGER)
     @JoinTable(
             name = "customer_courses",
             joinColumns = @JoinColumn(name = "customer_id"),
